@@ -1,0 +1,27 @@
+{
+  "name": "wordington",
+  "version": "1.0.0",
+  "description": "Wordle Clone Project for practice",
+  "main": "app.js",
+  "scripts": {
+    "start:backend": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asue92/Wordington.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asue92/Wordington/issues"
+  },
+  "homepage": "https://github.com/asue92/Wordington#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
