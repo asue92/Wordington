@@ -2,7 +2,19 @@ const tileDisplay = document.querySelector(".tile-container");
 const keyboard = document.querySelector(".key-container");
 const messageDisplay = document.querySelector(".message-container");
 
-const wordington = "SUPER";
+let wordington;
+
+const getWordington = () => {
+  fetch("http://localhost:8000/word")
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json);
+      wordington = json.toUpperCase();
+    })
+    .catch((error) => console.log(error));
+};
+
+getWordington();
 
 const keys = [
   "Q",
@@ -160,8 +172,6 @@ const flipTile = () => {
   });
 
   rowTiles.forEach((tile, index) => {
-    // const dataLetter = tile.getAttribute("data");
-
     setTimeout(() => {
       tile.classList.add("flip");
       tile.classList.add(guess[index].color);
