@@ -8,7 +8,6 @@ const getWordington = () => {
   fetch("http://localhost:8000/word")
     .then((response) => response.json())
     .then((json) => {
-      console.log(json);
       wordington = json.toUpperCase();
     })
     .catch((error) => console.log(error));
@@ -81,16 +80,17 @@ keys.forEach((key) => {
 });
 
 const handleClick = (letter) => {
-  console.log("clicked!", letter);
-  if (letter === "«") {
-    deleteLetter();
-    return;
+  if (!isGameOver) {
+    if (letter === "«") {
+      deleteLetter();
+      return;
+    }
+    if (letter === "ENTER") {
+      checkRow();
+      return;
+    }
+    addLetter(letter);
   }
-  if (letter === "ENTER") {
-    checkRow();
-    return;
-  }
-  addLetter(letter);
 };
 
 const addLetter = (letter) => {
@@ -116,23 +116,32 @@ const deleteLetter = () => {
 const checkRow = () => {
   const guess = guessRows[currentRow].join("");
   if (currentTile > 4) {
-    console.log("guess is " + guess, "wordington is " + wordington);
-    flipTile();
-    if (wordington === guess) {
-      showMessage("Magnificent!");
-      isGameOver = true;
-      return;
-    } else {
-      if (currentRow >= 5) {
-        showMessage("Game over!");
-        isGameOver = false;
-        return;
-      }
-      if (currentRow < 5) {
-        currentRow++;
-        currentTile = 0;
-      }
-    }
+    fetch(`http://localhost:8000/check/?word=${guess}`)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json == "Entry word not found") {
+          showMessage("word not in list");
+          return;
+        } else {
+          flipTile();
+          if (wordington == guess) {
+            showMessage("Magnificent!");
+            isGameOver = true;
+            return;
+          } else {
+            if (currentRow >= 5) {
+              isGameOver = true;
+              showMessage("Game Over");
+              return;
+            }
+            if (currentRow < 5) {
+              currentRow++;
+              currentTile = 0;
+            }
+          }
+        }
+      })
+      .catch((err) => console.log(err));
   }
 };
 
